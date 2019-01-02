@@ -1,0 +1,409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--************************************************************************-->
+<!--* JavaScript Crunchinator Demo                                         *-->
+<!--*                                                                      *-->
+<!--* Copyright 2001 by Mike Hall                                          *-->
+<!--************************************************************************-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<title>JavaScript代码压缩-js代码压缩-压缩JS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<script type="text/javascript">//<![CDATA[
+
+var literalStrings;  //临时变量.
+
+function crunch(f) {
+
+  var input, output;
+  var i;
+
+  // 获得输入里的代码,处理并显示输出
+
+  f.elements.codeOut.value = "";
+  f.elements.statusMsg.value = "进行中...";
+  input = f.elements.codeIn.value;
+  output = input;
+  f.elements.statusMsg.value = "替换字符串...";
+  output = replaceLiteralStrings(output);
+  f.elements.statusMsg.value = "去掉注释...";
+  output = removeComments(output);
+  f.elements.statusMsg.value = "压缩空格...";
+  output = compressWhiteSpace(output);
+  f.elements.statusMsg.value = "连接字符串...";
+  output = combineLiteralStrings(output);
+  f.elements.statusMsg.value = "恢复字符串...";
+  output = restoreLiteralStrings(output);
+  f.elements.statusMsg.value = "完成.";
+  f.elements.codeOut.value = output;
+
+  // Compute sizes.
+
+  f.elements.sizeIn.value   = input.length;
+  f.elements.sizeOut.value  = output.length;
+  f.elements.sizeDiff.value = input.length - output.length;
+  if (input.length > 0)
+    f.elements.pctOut.value = 100 -
+      Math.round(output.length / input.length * 10000) / 100;
+
+  return false;
+}
+
+function replaceLiteralStrings(s) {
+
+  var i, c, t, lines, escaped, quoteChar, inQuote, literal;
+
+  literalStrings = new Array();
+  t = "";
+
+  // Split script into individual lines.
+
+  lines = s.split("\n");
+  for (i = 0; i < lines.length; i++) {
+
+    j = 0;
+    inQuote = false;
+    while (j <= lines[i].length) {
+      c = lines[i].charAt(j);
+
+      // If not already in a string, look for the start of one.
+
+      if (!inQuote) {
+        if (c == '"' || c == "'") {
+          inQuote = true;
+          escaped = false;
+          quoteChar = c;
+          literal = c;
+        }
+       else
+         t += c;
+      }
+
+      // Already in a string, look for end and copy characters.
+
+      else {
+        if (c == quoteChar && !escaped) {
+          inQuote = false;
+          literal += quoteChar;
+          t += "__" + literalStrings.length + "__";
+          literalStrings[literalStrings.length] = literal;
+        }
+        else if (c == "\\" && !escaped)
+          escaped = true;
+        else
+          escaped = false;
+        literal += c;
+      }
+      j++;
+    }
+    t += "\n";
+  }
+
+  return t;
+}
+
+function removeComments(s) {
+
+  var lines, i, t;
+
+  // Remove '//' comments from each line.
+
+  lines = s.split("\n");
+  t = "";
+  for (i = 0; i < lines.length; i++)
+    t += lines[i].replace(/([^\x2f]*)\x2f\x2f.*$/, "$1");
+
+  // Replace newline characters with spaces.
+
+  t = t.replace(/(.*)\n(.*)/g, "$1 $2");
+
+  // Remove '/* ... */' comments.
+
+  lines = t.split("*/");
+  t = "";
+  for (i = 0; i < lines.length; i++)
+    t += lines[i].replace(/(.*)\x2f\x2a(.*)$/g, "$1 ");
+
+  return t;
+}
+
+function compressWhiteSpace(s) {
+
+  // Condense white space.
+
+  s = s.replace(/\s+/g, " ");
+  s = s.replace(/^\s(.*)/, "$1");
+  s = s.replace(/(.*)\s$/, "$1");
+
+  // Remove uneccessary white space around operators, braces and parentices.
+
+  //[\x21\x25\x26\x28\x29\x2a\x2b\x2c\x2d\x2f\x3a\x3b\x3c\x3d\x3e\x3f\x5b\x5d\x5c\x7b\x7c\x7d\x7e]
+  //[!%&()*+,-/:;<=>?[]\{|}~]
+  s = s.replace(/\s([\x21\x25\x26\x28\x29\x2a\x2b\x2c\x2d\x2f\x3a\x3b\x3c\x3d\x3e\x3f\x5b\x5d\x5c\x7b\x7c\x7d\x7e])/g, "$1");
+  s = s.replace(/([\x21\x25\x26\x28\x29\x2a\x2b\x2c\x2d\x2f\x3a\x3b\x3c\x3d\x3e\x3f\x5b\x5d\x5c\x7b\x7c\x7d\x7e])\s/g, "$1");
+  return s;
+}
+
+function combineLiteralStrings(s) {
+
+  var i;
+
+  s = s.replace(/"\+"/g, "");
+  s = s.replace(/'\+'/g, "");
+
+  return s;
+}
+
+function restoreLiteralStrings(s) {
+
+  var i;
+
+  for (i = 0; i < literalStrings.length; i++)
+    s = s.replace(new RegExp("__" + i + "__"), literalStrings[i]);
+
+  return s;
+}
+
+//]]></script>
+</head>
+<body style="background-color: rgb(218, 230, 190);">
+<h3>JavaScript 压缩---<a href="http://www.css88.com/" class="STYLE2">返回前端开发首页</a></h3><hr>
+
+<div class="STYLE2" id="demoBox">
+&nbsp;&nbsp;这程序是由Mike Hall写的，JavaScript的压缩不是为了保护代码而压缩，而是压缩后的js代码文件可以小一倍甚至多倍，从而使这个js代码快速的下载到客户端，特别js文件较大时速度效果非常明显．
+<br>
+<br>
+使用方法：<br>
+&nbsp;&nbsp;使用下面的表单,你可以浓缩JavaScript代码.只用将任何脚本代码粘贴到输入的文本框,压下 '压缩' 按钮,那浓缩的版本就出现在 '输出' 里.
+然后你可以使用 '全选' 按钮,快速选中'输出'里的代码,剪切粘贴到一个新的源码文件.<br>
+<br>
+3.JavaScript 格式化工具<a href="http://www.css88.com/tool/js_beautify/" target="_blank">http://www.css88.com/tool/js_beautify/</a></div>
+
+<p></p>
+
+<div style="width:1003px">
+  <div style="float:left">
+    <form action="" onsubmit="return crunch(this)">
+      
+      <table border="0">
+        <tbody><tr>
+          <th colspan="3">输入</th>
+      </tr>
+        <tr>
+          <td colspan="3"><textarea name="codeIn" rows="10" cols="80" style="background-color: rgb(218, 230, 190);">
+function handleInputs(my_inputs) {
+	var ps;
+	var qz;
+	var qm;
+	var sy;
+	
+	for(var i = 0; i &lt; my_inputs.length; i++) {
+		el = my_inputs[i];
+		if( el.id.indexOf("ps") != -1 ) {
+			ps = el;
+		} else if( el.id.indexOf("qz") != -1 ) {
+			qz = el;
+		} else if( el.id.indexOf("qm") != -1 ) {
+			qm = el;
+		} else if( el.id.indexOf("sy") != -1 ) {
+			sy = el;
+		}
+	}
+	var ret = new Array(ps,qz,qm,sy);
+	return ret;
+}
+
+var ps_array = new Array(100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+, 100
+);
+var qz_array = new Array();
+var qm_array = new Array(91 
+, 89 
+, 74 
+, 76 
+, 72 
+, 83 
+, 76 
+, 92 
+, 76 
+, 80 
+, 76 
+, 92 
+, 76 
+, 75 
+, 65 
+, 80 
+, 72 
+, 92 
+, 72 
+, 76 
+, 92 
+, 76 
+, 79 
+, 80 
+, 84 
+, 78 
+, 80 
+, 76 
+, 76 
+, 92 
+, 83 
+, 76 
+, 83 
+, 72 
+, 83 
+, 83 
+, 83 
+, 76 
+, 76 
+, 92 
+, 92 
+, 72 
+, 83 
+, 72 
+, 80 
+, 72 
+, 91  
+);
+var sy_array = new Array();
+
+var tab = document.getElementById("frame_content").contentWindow.document.getElementById('DataGrid1');
+
+	var k = 0;
+for (var i = 0; i &lt; tab.rows.length; i++) {
+//for (var i = 0; i &lt; 5; i++) {
+	if(tab.rows[i].className == "datelisthead") {
+		continue;
+	}
+	var inputs = tab.rows[i].getElementsByClassName("text_nor");
+	var target_inputs = handleInputs(inputs);
+	target_inputs[0].value = ps_array[k];//平时
+	target_inputs[1].value = qz_array[k];//期中
+	target_inputs[2].value = qm_array[k];//期末
+	target_inputs[3].value = sy_array[k];//实验
+	k++;
+}
+
+
+
+
+
+
+</textarea></td>
+      </tr>
+        <tr>
+          <td><b>字节数:</b>  <input name="sizeIn" type="text" size="10" disabled="disabled" value="1630"></td>
+        <td><b>状态:</b> <input name="statusMsg" type="text" size="30" disabled="disabled" value="完成."></td>
+        <td style="text-align:right;">
+          <input class="button" type="submit" value="压缩"> 
+          <input class="button" type="reset" value="清除"></td>
+      </tr>
+      </tbody></table>
+      
+<p></p>
+      
+<table border="0">
+  <tbody><tr>
+    <th colspan="4">输出</th>
+      </tr>
+  <tr>
+    <td colspan="4"><textarea name="codeOut" rows="10" cols="80" style="background-color: rgb(218, 230, 190);">function
+ handleInputs(my_inputs){var ps;var qz;var qm;var sy;for(var 
+i=0;i&lt;my_inputs.length;i++){el=my_inputs[i];if(el.id.indexOf("ps")!=-1){ps=el;}else
+ if(el.id.indexOf("qz")!=-1){qz=el;}else 
+if(el.id.indexOf("qm")!=-1){qm=el;}else 
+if(el.id.indexOf("sy")!=-1){sy=el;}}var ret=new 
+Array(ps,qz,qm,sy);return ret;}var ps_array=new 
+Array(100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100);var
+ qz_array=new Array();var qm_array=new 
+Array(91,89,74,76,72,83,76,92,76,80,76,92,76,75,65,80,72,92,72,76,92,76,79,80,84,78,80,76,76,92,83,76,83,72,83,83,83,76,76,92,92,72,83,72,80,72,91);var
+ sy_array=new Array();var 
+tab=document.getElementById("frame_content").contentWindow.document.getElementById('DataGrid1');var
+ k=0;for(var 
+i=0;i&lt;tab.rows.length;i++){if(tab.rows[i].className=="datelisthead"){continue;}var
+ inputs=tab.rows[i].getElementsByClassName("text_nor");var 
+target_inputs=handleInputs(inputs);target_inputs[0].value=ps_array[k];target_inputs[1].value=qz_array[k];target_inputs[2].value=qm_array[k];target_inputs[3].value=sy_array[k];k++;}</textarea></td>
+      </tr>
+  <tr>
+    <td><b>字节数:</b>   <input name="sizeOut" type="text" size="10" disabled="disabled" value="1176"></td>
+        <td><b>减少:</b>   <input name="sizeDiff" type="text" size="10" disabled="disabled" value="454"></td>
+        <td><b>% 减少率:</b> <input name="pctOut" type="text" size="10" disabled="disabled" value="27.849999999999994"></td>
+        <td style="text-align:right;"><input class="button" type="button" value="全选" onclick="this.form.codeOut.select();this.form.codeOut.focus();"></td>
+      </tr>
+  </tbody></table>
+  </form>
+  </div>
+  <div style="float:right; width:320px">
+    <p class="STYLE1">使用须知：</p>
+    <p class="STYLE1">大量的代码运行效率较低，cpu占用较高，请耐心等待！呵呵</p>
+    <p class="STYLE2">1.保存好您的开发版本，便于以后修改维护；</p>
+    <p class="STYLE2">2.压缩前，检查每一行代码确保以“;”结束;</p>
+    <p class="STYLE2">3.if...else...语句加上“{}”，即如果你的i语句为<br>
+    if(...)<br>
+    ...//一条语句<br>
+    else<br>
+    ...//一条语句</p>
+    <p class="STYLE2">请改为<br>
+    if(...)<br>
+{...}//一条语句<br>
+else<br>
+{...}//一条语句</p>
+  </div>
+</div>
+<!--google统计-->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="JavaScript%E4%BB%A3%E7%A0%81%E5%8E%8B%E7%BC%A9-js%E4%BB%A3%E7%A0%81%E5%8E%8B%E7%BC%A9-%E5%8E%8B%E7%BC%A9JS_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3448069-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+
+</body></html>
