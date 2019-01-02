@@ -2,6 +2,13 @@
 <html>
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- 引入 Bootstrap -->
+	  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	  <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+      <script src="https://code.jquery.com/jquery.js"></script>
+      <!-- 包括所有已编译的插件 -->
+      <script src="js/bootstrap.min.js"></script>
 <title>成绩录入助手</title>
 </head>
 
@@ -10,12 +17,14 @@
 	<div class="row clearfix">
 		<div class="col-md-6 column">
 			<div class="btn-group">
-				 <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 左</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-center"></em> 中</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-right"></em> 右</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-justify"></em> 全</button>
+				 <button class="btn btn-default" type="button">
+					<em class="glyphicon glyphicon-align-left"></em>生成</button> 
 			</div>
 		</div>
 		<div class="col-md-6 column">
 			<div class="btn-group">
-				 <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 左</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-center"></em> 中</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-right"></em> 右</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-justify"></em> 全</button>
+				 <button class="btn btn-default" type="button">
+					 <em class="glyphicon glyphicon-align-left"></em>拖动至收藏栏</button>
 			</div>
 		</div>
 	</div>
@@ -23,106 +32,44 @@
 		<div class="col-md-6 column">
 			<form role="form">
 				<div class="form-group">
-					 <label for="exampleInputEmail1">Email address</label><input type="email" class="form-control" id="exampleInputEmail1" />
-				</div>
-				<div class="form-group">
-					 <label for="exampleInputPassword1">Password</label><input type="password" class="form-control" id="exampleInputPassword1" />
-				</div>
-				<div class="form-group">
-					 <label for="exampleInputFile">File input</label><input type="file" id="exampleInputFile" />
-					<p class="help-block">
-						Example block-level help text here.
-					</p>
+					 <label for="exampleInputEmail1">平时</label>
+					 <input type="text" class="form-control" id="exampleInputEmail1" style="height:51px;width:449px" />
 				</div>
 				<div class="checkbox">
 					 <label><input type="checkbox" />Check me out</label>
-				</div> <button type="submit" class="btn btn-default">Submit</button>
+				</div> 
 			</form>
 		</div>
 		<div class="col-md-6 column">
-			<form class="form-horizontal" role="form">
+			<form role="form">
 				<div class="form-group">
-					 <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-					<div class="col-sm-10">
-						<input type="email" class="form-control" id="inputEmail3" />
-					</div>
+					 <label for="exampleInputEmail1">期中</label><input type="email" class="form-control" id="exampleInputEmail1" />
 				</div>
-				<div class="form-group">
-					 <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-					<div class="col-sm-10">
-						<input type="password" class="form-control" id="inputPassword3" />
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<div class="checkbox">
-							 <label><input type="checkbox" />Remember me</label>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						 <button type="submit" class="btn btn-default">Sign in</button>
-					</div>
-				</div>
+				<div class="checkbox">
+					 <label><input type="checkbox" />Check me out</label>
+				</div> 
 			</form>
 		</div>
 	</div>
 	<div class="row clearfix">
 		<div class="col-md-6 column">
-			<form class="form-horizontal" role="form">
+			<form role="form">
 				<div class="form-group">
-					 <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-					<div class="col-sm-10">
-						<input type="email" class="form-control" id="inputEmail3" />
-					</div>
+					 <label for="exampleInputEmail1">期末</label><input type="email" class="form-control" id="exampleInputEmail1" />
 				</div>
-				<div class="form-group">
-					 <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-					<div class="col-sm-10">
-						<input type="password" class="form-control" id="inputPassword3" />
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<div class="checkbox">
-							 <label><input type="checkbox" />Remember me</label>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						 <button type="submit" class="btn btn-default">Sign in</button>
-					</div>
-				</div>
+				<div class="checkbox">
+					 <label><input type="checkbox" />Check me out</label>
+				</div> 
 			</form>
 		</div>
 		<div class="col-md-6 column">
-			<form class="form-horizontal" role="form">
+			<form role="form">
 				<div class="form-group">
-					 <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-					<div class="col-sm-10">
-						<input type="email" class="form-control" id="inputEmail3" />
-					</div>
+					 <label for="exampleInputEmail1">实验</label><input type="email" class="form-control" id="exampleInputEmail1" />
 				</div>
-				<div class="form-group">
-					 <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-					<div class="col-sm-10">
-						<input type="password" class="form-control" id="inputPassword3" />
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<div class="checkbox">
-							 <label><input type="checkbox" />Remember me</label>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						 <button type="submit" class="btn btn-default">Sign in</button>
-					</div>
-				</div>
+				<div class="checkbox">
+					 <label><input type="checkbox" />Check me out</label>
+				</div> 
 			</form>
 		</div>
 	</div>
