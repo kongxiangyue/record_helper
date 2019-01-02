@@ -37,12 +37,19 @@ $(document).ready(function(){
  
 
 	$("#clear_btn").click(function(){
-		alert("ba");
 		text_ids.forEach(element => {
 			$(element).val("");
 		});
 	});
+
+	$("#drag_this").click(function(){
+		alert("请不要点击，将本按键拖动至收藏");
+	});
+
+
 });
+
+
 </script>
 
 
@@ -62,7 +69,7 @@ $(document).ready(function(){
 		</div>
 		<div class="col-md-6 column">
 			<div class="btn-group">
-				<a class="btn btn-default" href="http://www.baidu.com/">
+				<a class="btn btn-default" id="drag_this">
 				<em class="glyphicon glyphicon-align-left"></em>拖动至收藏栏</a>
 			</div>
 		</div>
