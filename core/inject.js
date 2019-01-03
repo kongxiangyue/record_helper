@@ -30,16 +30,25 @@ var tab = document.getElementById("frame_content").contentWindow.document.getEle
 
 	var k = 0;
 for (var i = 0; i < tab.rows.length; i++) {
-//for (var i = 0; i < 5; i++) {
 	if(tab.rows[i].className == "datelisthead") {
 		continue;
 	}
 	var inputs = tab.rows[i].getElementsByClassName("text_nor");
 	var target_inputs = handleInputs(inputs);
-	target_inputs[0].value = ps_array[k];//平时
-	target_inputs[1].value = qz_array[k];//期中
-	target_inputs[2].value = qm_array[k];//期末
-	target_inputs[3].value = sy_array[k];//实验
+	
+	if (ps_array.length > 0) {
+		target_inputs[0].value = ps_array[k];//平时
+	}
+	if (qz_array.length > 0) {
+		target_inputs[1].value = qz_array[k];//期中
+	}
+	if (qm_array.length > 0) {
+		target_inputs[2].value = qm_array[k];//期末
+	}
+	if (sy_array > 0) {
+		target_inputs[3].value = sy_array[k];//实验
+	}
+	
 	k++;
 }
 
