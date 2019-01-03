@@ -63,12 +63,13 @@ $(document).ready(function(){
 		text_ids.forEach(element => {
 			input_array.push(getTextString(element));
 		});
-		alert(inject_string.format(input_array[0]
+		
+		$("#drag_this").attr("href", "javascript:" 
+		+ inject_string.format(input_array[0]
 		, input_array[1]
 		, input_array[2]
 		, input_array[3]
 		));
-	
 	});
  
 
