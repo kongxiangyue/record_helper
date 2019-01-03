@@ -39,7 +39,7 @@ $(document).ready(function(){
 	}
 
 	var inject_string = "function handleInputs(my_inputs){var ps;var qz;var qm;var sy;for(var i=0;i<my_inputs.length;i++){el=my_inputs[i];if(el.id.indexOf(\"ps\")!=-1){ps=el}else{if(el.id.indexOf(\"qz\")!=-1){qz=el}else{if(el.id.indexOf(\"qm\")!=-1){qm=el}else{if(el.id.indexOf(\"sy\")!=-1){sy=el}}}}}var ret=new Array(ps,qz,qm,sy);return ret}\
-	var ps_array=new Array({0});var qz_array=new Array({1});var qm_array=new Array({2});var sy_array=new Array({3});var tab=document.getElementById(\"frame_content\").contentWindow.document.getElementById(\"DataGrid1\");var k=0;for(var i=0;i<tab.rows.length;i++){if(tab.rows[i].className==\"datelisthead\"){continue}var inputs=tab.rows[i].getElementsByClassName(\"text_nor\");var target_inputs=handleInputs(inputs);target_inputs[0].value=ps_array[k];target_inputs[1].value=qz_array[k];target_inputs[2].value=qm_array[k];target_inputs[3].value=sy_array[k];k++};";
+			var ps_array=new Array({0});var qz_array=new Array({1});var qm_array=new Array({2});var sy_array=new Array({3});var tab=document.getElementById(\"frame_content\").contentWindow.document.getElementById(\"DataGrid1\");var k=0;for(var i=0;i<tab.rows.length;i++){if(tab.rows[i].className==\"datelisthead\"){continue}var inputs=tab.rows[i].getElementsByClassName(\"text_nor\");var target_inputs=handleInputs(inputs);if(ps_array.length>0){target_inputs[0].value=ps_array[k]}if(qz_array.length>0){target_inputs[1].value=qz_array[k]}if(qm_array.length>0){target_inputs[2].value=qm_array[k]}if(sy_array>0){target_inputs[3].value=sy_array[k]}k++};";
 
 	function getTextString(id) {
 		var text_val = $(id).val();
@@ -64,6 +64,8 @@ $(document).ready(function(){
 			input_array.push(getTextString(element));
 		});
 		
+
+
 		$("#drag_this").attr("href", "javascript:" 
 		+ inject_string.format(input_array[0]
 		, input_array[1]
