@@ -45,12 +45,11 @@ $(document).ready(function(){
 
 	$("#clear_btn").click(function(){
 		text_ids.forEach(element => {
-			$(element).val(1);
+			$(element).val("");
 		});
 	});
 
 	$("#all_select_btn").click(function(){
-		
 		checkAll(true);
 	});
 
