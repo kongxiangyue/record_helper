@@ -72,6 +72,11 @@ $(document).ready(function(){
 		, input_array[2]
 		, input_array[3]
 		));
+		text_ids.forEach(element => {
+			$(element).val("");
+		});
+
+		alert("生成成功");
 	});
  
 
@@ -79,6 +84,8 @@ $(document).ready(function(){
 		text_ids.forEach(element => {
 			$(element).val("");
 		});
+
+		$("#drag_this").attr("href", "");
 	});
 
 	$("#all_select_btn").click(function(){
