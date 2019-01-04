@@ -45,7 +45,7 @@ for (var i = 0; i < tab.rows.length; i++) {
 	if (qm_array.length > 0) {
 		target_inputs[2].value = qm_array[k];//期末
 	}
-	if (sy_array > 0) {
+	if (sy_array.length > 0) {
 		target_inputs[3].value = sy_array[k];//实验
 	}
 	
